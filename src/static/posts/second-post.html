@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Some sample thoughts on the little decisions that make a project easier to understand.">
+    <title>Making room for the small details | jmoo.dev</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../post.css">
+</head>
+<body data-page="blog">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <a class="wordmark" href="/" aria-label="jmoo.dev home">jmoo<span>.dev</span></a>
+        <nav class="nav" aria-label="Main navigation">
+            <a class="nav-link" href="../index.html" data-page="home">Home</a>
+            <a class="nav-link" href="../blog.html" data-page="blog" aria-current="page">Blog</a>
+            <a class="nav-link" href="../projects.html" data-page="projects">Projects</a>
+            <a class="nav-link" href="../contact.html" data-page="contact">Contact</a>
+        </nav>
+    </header>
+
+    <main class="main post-main" id="main" tabindex="-1">
+        <a class="post-back" href="../blog.html"><span aria-hidden="true">&larr;</span>Back to the notebook</a>
+        <article class="post" aria-labelledby="post-title">
+            <header class="post-header">
+                <p class="entry-meta">
+                    <span>Sample post</span><span aria-hidden="true">&middot;</span>
+                    <time datetime="2026-10-12T16:00:00Z">Oct 12, 2026</time><span aria-hidden="true">&middot;</span>
+                    <span>6 min read</span>
+                </p>
+                <h1 id="post-title">Making room for the small details</h1>
+                <p class="description">Some placeholder thoughts on the little decisions that make a project easier to understand.</p>
+            </header>
+
+            <hr class="post-divider">
+
+            <div class="post-body">
+                <p>This is a sample second write-up. Small, deliberate decisions can make an idea easier to follow and a project easier to maintain. A clear name, a useful error, or a well-placed example saves the next reader a little guesswork.</p>
+
+                <h2>Give things a clear name</h2>
+                <p>A name is often the first explanation a reader gets. A function called <code>getPublishedNotes()</code> gives more context than a function called <code>getData()</code>. That small amount of context adds up across a project.</p>
+                <p>The same principle applies to the page around the code. A heading introduces the idea; the paragraph underneath explains why it matters. Each piece has a job.</p>
+
+                <figure class="code-block">
+                    <figcaption><span>notes.js</span><span class="code-language">JavaScript</span></figcaption>
+                    <pre tabindex="0" aria-label="JavaScript example: select published notes"><code><span class="token-comment">// Make the selection explicit for the next reader.</span>
+<span class="token-keyword">function</span> <span class="token-function">getPublishedNotes</span>(notes) {
+    <span class="token-keyword">return</span> notes.<span class="token-function">filter</span>((note) =&gt; {
+        <span class="token-keyword">return</span> note.status === <span class="token-string">'published'</span>;
+    });
+}
+
+<span class="token-keyword">const</span> notes = [
+    { title: <span class="token-string">'An afternoon experiment'</span>, status: <span class="token-string">'published'</span> },
+    { title: <span class="token-string">'An unfinished thought'</span>, status: <span class="token-string">'draft'</span> },
+];
+
+console.<span class="token-function">log</span>(<span class="token-function">getPublishedNotes</span>(notes));</code></pre>
+                </figure>
+
+                <h2>Keep the explanation near the example</h2>
+                <p>The code returns only the published note and leaves the original list intact. A short explanation next to the example makes both the intent and the result easier to check.</p>
+                <blockquote><p>A little context now can save a lot of rediscovery later.</p></blockquote>
+
+                <h2>Notice what can be left out</h2>
+                <p>Not every entry needs a subtitle or an image. Let the material determine the structure. A direct title, a short description, and a useful example can be enough to tell the story.</p>
+                <ol>
+                    <li>Read the example without its surrounding explanation.</li>
+                    <li>Find the first point where its purpose becomes unclear.</li>
+                    <li>Add just enough context to answer that question.</li>
+                </ol>
+                <p>There is room to expand this note as the project grows. For now, the aim is to keep the next step easy to understand.</p>
+            </div>
+
+            <nav class="post-end" aria-label="More blog posts">
+                <a href="../blog.html"><span aria-hidden="true">&larr;</span> All posts</a>
+                <a href="first-post.html">Notes from a curious afternoon <span aria-hidden="true">&rarr;</span></a>
+            </nav>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <p>jmoo.dev</p>
+        <a href="../contact.html">Say hello <span aria-hidden="true">&rarr;</span></a>
+    </footer>
+</body>
+</html>

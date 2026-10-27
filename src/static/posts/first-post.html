@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A sample write-up about following a question, trying something new, and documenting the result.">
+    <title>Notes from a curious afternoon | jmoo.dev</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../post.css">
+</head>
+<body data-page="blog">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <a class="wordmark" href="/" aria-label="jmoo.dev home">jmoo<span>.dev</span></a>
+        <nav class="nav" aria-label="Main navigation">
+            <a class="nav-link" href="../index.html" data-page="home">Home</a>
+            <a class="nav-link" href="../blog.html" data-page="blog" aria-current="page">Blog</a>
+            <a class="nav-link" href="../projects.html" data-page="projects">Projects</a>
+            <a class="nav-link" href="../contact.html" data-page="contact">Contact</a>
+        </nav>
+    </header>
+
+    <main class="main post-main" id="main" tabindex="-1">
+        <a class="post-back" href="../blog.html"><span aria-hidden="true">&larr;</span>Back to the notebook</a>
+        <article class="post" aria-labelledby="post-title">
+            <header class="post-header">
+                <p class="entry-meta">
+                    <span>Sample post</span><span aria-hidden="true">&middot;</span>
+                    <time datetime="2026-10-18T14:30:00Z">Oct 18, 2026</time><span aria-hidden="true">&middot;</span>
+                    <span>4 min read</span>
+                </p>
+                <h1 id="post-title">Notes from a curious afternoon</h1>
+                <p class="post-subtitle">A small question, a little code, and somewhere to begin.</p>
+                <p class="description">A sample write-up about following a question, trying something new, and documenting the result.</p>
+            </header>
+
+            <hr class="post-divider">
+
+            <div class="post-body">
+                <p>This sample article begins with a simple question. What happens when we slow down, explore an unfamiliar idea, and write down what we discover?</p>
+                <p>For this afternoon&rsquo;s experiment, the goal was small: take a few observations and turn them into a note I could find again. A useful notebook starts with a little context, a reproducible example, and an honest account of what happened.</p>
+
+                <h2>Start with something small</h2>
+                <p>Before building anything elaborate, I wrote down the question and the result I expected. Keeping those two things close makes it easier to notice when an assumption is doing more work than the code.</p>
+                <ul>
+                    <li>Choose one question that can be explored in an afternoon.</li>
+                    <li>Keep the smallest example that explains the behavior.</li>
+                    <li>Record what changed, including the attempts that led nowhere.</li>
+                </ul>
+
+                <h2>A little structure goes a long way</h2>
+                <p>A short script is often enough to make an idea concrete. Here, <code>format_note()</code> collects a title and a few observations into a plain text note.</p>
+
+                <figure class="code-block">
+                    <figcaption><span>notebook.py</span><span class="code-language">Python</span></figcaption>
+                    <pre tabindex="0" aria-label="Python example: format a notebook entry"><code><span class="token-comment"># Keep the question close to the observations.</span>
+<span class="token-keyword">def</span> <span class="token-function">format_note</span>(title: <span class="token-function">str</span>, observations: <span class="token-function">list</span>[<span class="token-function">str</span>]) -&gt; <span class="token-function">str</span>:
+    heading = <span class="token-string">f"# {title}"</span>
+    lines = [<span class="token-string">f"- {item}"</span> <span class="token-keyword">for</span> item <span class="token-keyword">in</span> observations]
+    <span class="token-keyword">return</span> <span class="token-string">"\n"</span>.join([heading, <span class="token-string">""</span>, *lines])
+
+note = <span class="token-function">format_note</span>(<span class="token-string">"An afternoon experiment"</span>, [
+    <span class="token-string">"Start with a question."</span>,
+    <span class="token-string">"Keep a reproducible example."</span>,
+])
+<span class="token-function">print</span>(note)</code></pre>
+                </figure>
+
+                <p>The output is intentionally simple. There&rsquo;s enough structure to scan later, and enough freedom to add a sentence about something unexpected. That balance matters more than finding the perfect format on the first attempt.</p>
+
+                <h2>Leave a trail for your future self</h2>
+                <p>The process is a loop: ask a question, try something, and leave a note. Each pass gives the next experiment a slightly better starting point.</p>
+
+                <figure class="post-image">
+                    <img src="../images/notebook-loop.svg" width="1200" height="480" loading="lazy" decoding="async" alt="Three connected stages: ask a question, try a small experiment, and leave a note. A return arrow leads back to the question.">
+                    <figcaption>A simple loop for an afternoon experiment: ask, try, document, and repeat.</figcaption>
+                </figure>
+
+                <p>A diagram, a screenshot, or a few lines of terminal output can hold the detail that a paragraph misses. Give that detail a caption so it still makes sense when you return to it weeks later.</p>
+                <blockquote><p>The useful note is the one that helps you pick up the thread again.</p></blockquote>
+
+                <h2>What I&rsquo;m taking forward</h2>
+                <p>A small question doesn&rsquo;t need a large system around it. Start with the example, explain the outcome, and keep the next question nearby. The rest can grow from there.</p>
+            </div>
+
+            <nav class="post-end" aria-label="More blog posts">
+                <a href="../blog.html"><span aria-hidden="true">&larr;</span> All posts</a>
+                <a href="second-post.html">Making room for the small details <span aria-hidden="true">&rarr;</span></a>
+            </nav>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <p>jmoo.dev</p>
+        <a href="../contact.html">Say hello <span aria-hidden="true">&rarr;</span></a>
+    </footer>
+</body>
+</html>

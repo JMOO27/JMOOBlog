@@ -1,0 +1,181 @@
+/* The article shares .main's gutters and width with the intro and content. */
+.post-main { gap: 1.75rem; }
+
+.post-back {
+    align-self: flex-start;
+    color: var(--secondary);
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.post-back span { margin-right: 0.5rem; }
+
+.post {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    width: 100%;
+}
+
+.post-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.post-header h1 { max-width: 23ch; }
+
+.post-subtitle {
+    max-width: 55ch;
+    color: var(--accent);
+    font-size: clamp(1.1rem, 2.3vw, 1.4rem);
+    line-height: 1.5;
+    letter-spacing: -0.02em;
+}
+
+/* Optional fields can be omitted entirely, without reserved space. */
+.post-subtitle:empty, .post-header .description:empty { display: none; }
+
+.post-divider {
+    width: 100%;
+    margin: clamp(1.75rem, 4vw, 2.75rem) 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+}
+
+.post-body {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 1.4rem;
+    min-width: 0;
+    color: var(--secondary);
+    font-size: 1rem;
+    line-height: 1.85;
+    overflow-wrap: anywhere;
+}
+
+.post-body > * {
+    width: 100%;
+    max-width: 46rem;
+}
+
+.post-body h2, .post-body h3 {
+    color: var(--text);
+    line-height: 1.4;
+    scroll-margin-top: 2rem;
+}
+
+.post-body h2 { margin-top: 1.25rem; font-size: 1.5rem; }
+.post-body h3 { margin-top: 0.75rem; font-size: 1.15rem; }
+.post-body strong { color: var(--text); }
+.post-body li + li { margin-top: 0.5rem; }
+.post-body ul, .post-body ol { padding-left: 1.5rem; }
+
+.post-body blockquote {
+    padding: 0.75rem 1.25rem;
+    border-left: 2px solid var(--accent);
+    background: var(--accent-dark);
+    color: var(--text);
+    border-radius: 0 6px 6px 0;
+}
+
+.post-body :not(pre) > code {
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    color: var(--accent-hover);
+    overflow-wrap: anywhere;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+
+/* Media sits slightly wider than prose, still inside the shared page width. */
+.post-body > .code-block, .post-body > .post-image {
+    max-width: 56rem;
+    min-width: 0;
+    margin-block: 0.5rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #0c0c0c;
+    box-shadow: 0 12px 30px #00000020;
+}
+
+.code-block figcaption {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    padding: 0.7rem 1.1rem;
+    border-bottom: 1px solid #303030;
+    background: #1b1b1b;
+    color: #bdbdbd;
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    font-size: 0.75rem;
+}
+
+.code-language { color: #a6a6a6; }
+
+.code-block pre {
+    margin: 0;
+    padding: clamp(1rem, 3vw, 1.75rem);
+    border: 0;
+    border-radius: 0;
+    background: #0c0c0c;
+    color: #e0e0e0;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    tab-size: 4;
+    white-space: pre;
+    overflow-wrap: normal;
+}
+
+.code-block pre:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -3px;
+}
+
+.code-block code { background: transparent; color: inherit; }
+.token-keyword { color: #c9a5ef; }
+.token-function { color: #9cdcfe; }
+.token-string { color: #a9d49b; }
+.token-comment { color: #989898; font-style: italic; }
+.token-number { color: #e8bb85; }
+
+.post-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: var(--surface);
+}
+
+.post-image figcaption {
+    padding: 0.85rem 1.1rem;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--secondary);
+    font-size: 0.8rem;
+    line-height: 1.6;
+}
+
+.post-end {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+}
+
+.post-end a { text-decoration: none; }
+
+@media (max-width: 480px) {
+    .post-header h1 { font-size: clamp(2.25rem, 10vw, 3rem); }
+    .post-body { font-size: 0.95rem; }
+    .post-body > .code-block, .post-body > .post-image { border-radius: 6px; }
+}

@@ -1,0 +1,6 @@
+*.env
+*.db
+/env
+/tests
+static/posts
+static/images
