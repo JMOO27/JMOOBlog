@@ -57,6 +57,10 @@ def create_parser() -> argparse.ArgumentParser:
 
     topics = commands.add_parser("topics", help="List topic IDs and titles.")
     topics.set_defaults(operation="topics")
+
+    posts = commands.add_parser("posts", help="List post IDs and titles for a topic.")
+    posts.add_argument("topic_id", type=positive_id, help="ID of the topic to query.")
+    posts.set_defaults(operation="posts")
     return parser
 
 
@@ -126,5 +130,13 @@ def run_command(args: argparse.Namespace, parser: argparse.ArgumentParser) -> No
         elif args.operation == "topics":
             for topic in database.read_topics():
                 print(f"{topic.id}: {topic.title}")
+        elif args.operation == "posts":
+            if database.read_topic(args.topic_id) is None:
+                raise ValueError(f"Topic {args.topic_id} not found.")
+            posts = database.read_blog_posts(topic_id=args.topic_id)
+            if not posts:
+                print(f"No posts found for topic {args.topic_id}.")
+            for post in posts:
+                print(f"{post.id}: {post.title}")
     except (OSError, UnicodeError, ValueError, sqlite3.Error) as error:
         parser.exit(1, f"error: {error}\n")
