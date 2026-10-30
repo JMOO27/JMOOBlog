@@ -5,3 +5,4 @@
 static/posts
 static/images
 *.pyc
+**/__pycache__/
