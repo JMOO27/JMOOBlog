@@ -1,74 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Security notes, projects, and ideas from Jason Monrroy.">
+    <meta name="description" content="I'm a Computer Science student interested in cybersecurity, systems, and useful tools. This site brings together my projects, technical notes, and the process behind them.">
+    <meta name="color-scheme" content="dark light">
     <title>Home | jmoo.dev</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="home.css">
-    <script src="vendor/marked-18.1.1.umd.js" defer></script>
-    <script src="vendor/purify-3.4.17.min.js" defer></script>
-    <script src="entries.js" defer></script>
+    <script src="/theme.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/vendor/marked-18.1.1.umd.js" defer></script>
+    <script src="/vendor/purify-3.4.17.min.js" defer></script>
+    <script src="/entries.js" defer></script>
 </head>
-
 <body data-page="home">
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
-        <a class="wordmark" href="/" aria-label="jmoo.dev home">jmoo<span>.dev</span></a>
-        <nav class="nav" aria-label="Main navigation">
-            <a class="nav-link" href="index.html" data-page="home" aria-current="page">Home</a>
-            <a class="nav-link" href="blog.html" data-page="blog">Blog</a>
-            <a class="nav-link" href="projects.html" data-page="projects">Projects</a>
-            <a class="nav-link" href="contact.html" data-page="contact">Contact</a>
-        </nav>
-    </header>
-
-    <div class="main" id="main" role="main" tabindex="-1">
-        <section class="notes-intro" aria-labelledby="intro-title">
-            <div class="notes-personal">
-                <h1 id="intro-title">Hello! I&rsquo;m<br><span>J</span>ason <span>M</span><span>o</span>nrr<span>o</span>y</h1>
-                <p class="notes-specialty">Cybersecurity Engineering <span aria-hidden="true">/</span> Application Security</p>
-                <p class="description">Part security notebook, part project journal. A place for the things I&rsquo;m figuring out, the things I&rsquo;m making, and the details I don&rsquo;t want to forget.</p>
-                <div class="intro-actions">
-                    <a class="intro-button" href="blog.html">Read my notes <span aria-hidden="true">&rarr;</span></a>
-                    <a class="social-link" href="https://github.com/JMOO27" target="_blank" rel="noopener noreferrer" aria-label="JMOO27 on GitHub (opens in a new tab)">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .75a11.25 11.25 0 0 0-3.56 21.92c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.64-1.25-1.64-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.63 1.22 3.27.93.1-.73.4-1.22.71-1.5-2.5-.28-5.13-1.25-5.13-5.56 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.1 1.15a10.8 10.8 0 0 1 5.64 0c2.15-1.45 3.1-1.15 3.1-1.15.61 1.55.23 2.7.11 2.98.72.79 1.16 1.79 1.16 3.02 0 4.32-2.64 5.28-5.15 5.56.4.35.76 1.04.76 2.09v3.08c0 .3.2.65.77.54A11.25 11.25 0 0 0 12 .75Z"/></svg>
-                        GitHub <span aria-hidden="true">&nearr;</span>
-                    </a>
-                    <a class="social-link" href="https://www.linkedin.com/in/jason-monrroy-09b687445/" target="_blank" rel="noopener noreferrer" aria-label="Jason Monrroy on LinkedIn (opens in a new tab)">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 2H3.55C2.69 2 2 2.68 2 3.52v16.96c0 .84.69 1.52 1.55 1.52h16.9c.86 0 1.55-.68 1.55-1.52V3.52c0-.84-.69-1.52-1.55-1.52ZM7.93 18.75H4.98V9.2h2.95v9.55ZM6.45 7.9a1.71 1.71 0 1 1 0-3.42 1.71 1.71 0 0 1 0 3.42Zm12.3 10.85H15.8V14.1c0-1.11-.02-2.54-1.55-2.54-1.55 0-1.79 1.21-1.79 2.46v4.73H9.51V9.2h2.83v1.3h.04c.39-.74 1.36-1.52 2.8-1.52 3 0 3.57 1.98 3.57 4.55v5.22Z"/></svg>
-                        LinkedIn <span aria-hidden="true">&nearr;</span>
-                    </a>
-                </div>
-            </div>
-            <section class="profile-panel blog-posts" aria-labelledby="blog-posts-title">
-                <div class="section-heading">
-                    <h2 id="blog-posts-title">Blog posts</h2>
-                    <a href="blog.html">All posts <span aria-hidden="true">&rarr;</span></a>
-                </div>
-                <div class="entry-list" data-entry-list="blog">
-                    <noscript>Enable JavaScript to view blog posts.</noscript>
-                </div>
-            </section>
-        </section>
-
-        <div class="content">
-            <section class="projects" aria-labelledby="projects-title">
-                <div class="section-heading">
-                    <h2 id="projects-title">Projects</h2>
-                    <a href="projects.html">All projects <span aria-hidden="true">&rarr;</span></a>
-                </div>
-                <div class="entry-list" data-entry-list="project">
-                    <noscript>Enable JavaScript to view projects.</noscript>
-                </div>
-            </section>
+        <a class="wordmark" href="/home" aria-label="jmoo.dev home">JMOO<span>.DEV</span></a>
+        <div class="header-actions">
+            <nav class="nav" aria-label="Main navigation">
+                <a class="nav-link" href="/home" data-page="home" aria-current="page">Home</a>
+                <a class="nav-link" href="/blog" data-page="blog">Blog</a>
+                <a class="nav-link" href="/projects" data-page="projects">Projects</a>
+                <a class="nav-link" href="/contact" data-page="contact">Contact</a>
+            </nav>
+            <button class="theme-switch" type="button" data-theme-toggle aria-label="Switch to light mode" title="Switch to light mode">
+                <svg class="theme-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.9 13.1A9 9 0 0 1 10.9 3.1 9 9 0 1 0 20.9 13.1Z"/></svg><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+            </button>
         </div>
-    </div>
-
+    </header>
+    <main class="main" id="main" tabindex="-1">
+        <section class="intro" aria-labelledby="intro-title">
+            <div class="intro-identity">
+                <h1 id="intro-title">JASON MONRROY</h1>
+                <p class="intro-handle">@JMOO27</p>
+                <p class="intro-specialty">Cybersecurity Engineering</p>
+            </div>
+            <div class="intro-about">
+                <p class="description"><span class="description-line">I'm a Computer Science student interested in</span>
+                    <span class="description-line">cybersecurity, systems, and useful tools.</span>
+                    <span class="description-line">This site brings together my projects,</span>
+                    <span class="description-line">technical notes, and the process behind them.</span></p>
+                <div class="social-links" aria-label="Author profiles and contact"><a href="https://github.com/JMOO27" target="_blank" rel="noopener noreferrer" aria-label="JMOO27 on GitHub (opens in a new tab)" title="GitHub">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .75a11.25 11.25 0 0 0-3.56 21.92c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.64-1.25-1.64-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.63 1.22 3.27.93.1-.73.4-1.22.71-1.5-2.5-.28-5.13-1.25-5.13-5.56 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.1 1.15a10.8 10.8 0 0 1 5.64 0c2.15-1.45 3.1-1.15 3.1-1.15.61 1.55.23 2.7.11 2.98.72.79 1.16 1.79 1.16 3.02 0 4.32-2.64 5.28-5.15 5.56.4.35.76 1.04.76 2.09v3.08c0 .3.2.65.77.54A11.25 11.25 0 0 0 12 .75Z"/></svg>
+                    </a>
+<a href="https://www.linkedin.com/in/jason-monrroy-09b687445/" target="_blank" rel="noopener noreferrer" aria-label="Jason Monrroy on LinkedIn (opens in a new tab)" title="LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 2H3.55C2.69 2 2 2.68 2 3.52v16.96c0 .84.69 1.52 1.55 1.52h16.9c.86 0 1.55-.68 1.55-1.52V3.52c0-.84-.69-1.52-1.55-1.52ZM7.93 18.75H4.98V9.2h2.95v9.55ZM6.45 7.9a1.71 1.71 0 1 1 0-3.42 1.71 1.71 0 0 1 0 3.42Zm12.3 10.85H15.8V14.1c0-1.11-.02-2.54-1.55-2.54-1.55 0-1.79 1.21-1.79 2.46v4.73H9.51V9.2h2.83v1.3h.04c.39-.74 1.36-1.52 2.8-1.52 3 0 3.57 1.98 3.57 4.55v5.22Z"/></svg>
+                    </a>
+<a href="/contact" aria-label="Contact Jason" title="Contact">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 7 9-7"/></svg>
+</a></div>
+            </div>
+        </section>
+        <section class="blog-posts" aria-labelledby="blog-posts-title">
+            <div class="section-heading">
+                <h2 id="blog-posts-title">Recent Posts</h2>
+                <a href="/blog">View all <span aria-hidden="true">&rarr;</span></a>
+            </div>
+            <div class="entry-list post-list" data-entry-list="blog" data-entry-limit="3" aria-live="polite">
+                <noscript>Enable JavaScript to view posts.</noscript>
+            </div>
+        </section>
+        <section class="projects" aria-labelledby="projects-title">
+            <div class="section-heading">
+                <h2 id="projects-title">Recent Projects</h2>
+                <a href="/projects">View all <span aria-hidden="true">&rarr;</span></a>
+            </div>
+            <div class="entry-list project-grid" data-entry-list="project" data-entry-limit="3" aria-live="polite">
+                <noscript>Enable JavaScript to view projects.</noscript>
+            </div>
+        </section>
+    </main>
     <footer class="site-footer">
         <p>jmoo.dev</p>
-        <a href="contact.html">Say hello! <span aria-hidden="true">&rarr;</span></a>
+        <a href="/contact">Say hello <span aria-hidden="true">&rarr;</span></a>
     </footer>
 </body>
 </html>

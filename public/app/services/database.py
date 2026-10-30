@@ -1,4 +1,4 @@
-import sqlite3
+﻿import sqlite3
 from collections.abc import Iterator
 from contextlib import contextmanager
 
@@ -160,7 +160,7 @@ def open_db() -> sqlite3.Connection:
     return conn
 
 
-@contextmanager
+@contextmanager # type: ignore
 def transaction() -> Iterator[sqlite3.Connection]:
     """Commit successful operations, roll back failures, and always close."""
     conn = open_db()

@@ -1,21 +1,15 @@
-// API entries use BlogEntry directly: blog_id, blog_type, title, content, timestamp.
+// Post details include the related topic, description, and UTC timestamp.
 // Titles and summaries use textContent. Markdown bodies are sanitized before insertion.
 const entryTemplate = document.createElement('template');
 entryTemplate.innerHTML = `
     <article class="entry">
-        <p class="entry-meta">
-            <span data-entry-label></span><span aria-hidden="true">&middot;</span>
-            <time></time>
-        </p>
-        <div class="entry-heading">
+        <div class="entry-copy">
+            <p class="entry-meta"><time></time></p>
             <h3><a></a></h3>
-            <a class="entry-view" data-entry-view-link>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/>
-                    <circle cx="12" cy="12" r="3"/>
-                </svg>
-            </a>
+            <p class="entry-summary"></p>
+            <div class="entry-tags"><span class="topic-tag"></span></div>
         </div>
+        <a class="entry-media"></a>
     </article>`;
 
 const entryDate = new Intl.DateTimeFormat('en-US', {
@@ -23,6 +17,9 @@ const entryDate = new Intl.DateTimeFormat('en-US', {
 });
 const entryTimestamp = new Intl.DateTimeFormat('en-US', {
     dateStyle: 'long', timeStyle: 'long', timeZone: 'America/New_York'
+});
+const articleDate = new Intl.DateTimeFormat('en-US', {
+    month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York'
 });
 
 function renderMarkdown(content) {
@@ -74,35 +71,42 @@ function appendContent(container, content) {
     container.append(body);
 }
 
-function renderEntry(entry, full = false) {
-    const article = entryTemplate.content.firstElementChild.cloneNode(true);
-    const isProject = entry.blog_type === 'project';
-    const link = article.querySelector('h3 a');
-    link.href = isProject ? `/projects.html#project-${entry.blog_id}` : `/post.html?id=${entry.blog_id}`;
-    link.textContent = entry.title;
-    const viewLink = article.querySelector('[data-entry-view-link]');
-    if (isProject) {
-        viewLink.remove();
-    } else {
-        viewLink.href = link.href;
-        viewLink.setAttribute('aria-label', `Read ${entry.title}`);
-        viewLink.title = `Read ${entry.title}`;
+function previewImageURL(content) {
+    const source = renderMarkdown(content).querySelector('img')?.getAttribute('src');
+    if (!source) return null;
+    try {
+        const url = new URL(source, window.location.href);
+        if (['http:', 'https:'].includes(url.protocol) || /^data:image\/(png|jpeg|gif|webp|avif);/i.test(source)) {
+            return url.href;
+        }
+    } catch {
+        // Malformed image URLs leave the reserved space intact.
     }
-    if (isProject) {
-        article.querySelector('[data-entry-label]').textContent = 'Project';
-    } else {
-        article.querySelector('.entry-meta').replaceChildren(article.querySelector('time'));
-    }
-    fillTime(article.querySelector('time'), entry.timestamp);
+    return null;
+}
 
-    if (full) {
-        article.id = `project-${entry.blog_id}`;
-        article.querySelector('h3').textContent = entry.title;
-        appendContent(article, entry.content);
-    } else {
-        const paragraph = document.createElement('p');
-        paragraph.textContent = preview(entry.content);
-        article.append(paragraph);
+function renderEntry(entry) {
+    const article = entryTemplate.content.firstElementChild.cloneNode(true);
+    const link = article.querySelector('h3 a');
+    link.href = `/post.html?id=${entry.id}`;
+    link.textContent = entry.title;
+    fillTime(article.querySelector('time'), entry.timestamp);
+    article.querySelector('.entry-summary').textContent = entry.description?.trim() || preview(entry.content);
+    article.querySelector('.topic-tag').textContent = entry.topic.title;
+
+    // Use the first sanitized Markdown image; every entry keeps its media slot.
+    const media = article.querySelector('.entry-media');
+    media.href = link.href;
+    media.setAttribute('aria-label', `Read ${entry.title}`);
+    const source = previewImageURL(entry.content);
+    if (source) {
+        const image = document.createElement('img');
+        image.alt = '';
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        image.addEventListener('error', () => image.remove(), { once: true });
+        image.src = source;
+        media.append(image);
     }
     return article;
 }
@@ -125,7 +129,7 @@ async function fetchJSON(url) {
     return response.json();
 }
 
-// Reuse each list request when a column and the latest panel need the same data.
+// Reuse requests when multiple lists need the same topic group.
 const entryRequests = new Map();
 function fetchEntries(type) {
     if (!entryRequests.has(type)) {
@@ -143,10 +147,8 @@ async function loadList(list) {
             showMessage(list, type === 'project' ? 'No projects yet.' : 'No blog posts yet.');
             return;
         }
-        list.replaceChildren(...entries.map(entry => renderEntry(entry, list.dataset.entryView === 'full')));
-        // Project bodies arrive after the browser's initial fragment lookup.
-        const target = document.getElementById(window.location.hash.slice(1));
-        if (target && list.contains(target)) requestAnimationFrame(() => target.scrollIntoView());
+        const visible = list.dataset.entryLimit ? entries.slice(0, Number(list.dataset.entryLimit)) : entries;
+        list.replaceChildren(...visible.map(entry => renderEntry(entry)));
     } catch {
         showMessage(list, 'Could not load entries. Please refresh to try again.', true);
     }
@@ -171,29 +173,60 @@ async function loadArticle(article) {
     const title = document.querySelector('#post-title');
     const id = new URLSearchParams(window.location.search).get('id');
     if (!id || !/^[1-9]\d*$/.test(id)) {
-        title.textContent = 'Entry not found';
-        showMessage(status, 'Choose an entry from the blog or projects page.');
+        document.title = 'Post not found | jmoo.dev';
+        showMessage(status, 'Post not found. Choose a post from the blog page.', true);
         return;
     }
-    showMessage(status, 'Loading entry…');
+    showMessage(status, 'Loading post…');
     try {
         const entry = await fetchJSON(`/api/entries/${id}`);
-        const isProject = entry.blog_type === 'project';
         title.textContent = entry.title;
         document.title = `${entry.title} | jmoo.dev`;
-        document.querySelector('meta[name="description"]').content = preview(entry.content);
-        article.querySelector('[data-entry-label]').textContent = isProject ? 'Project' : 'Blog post';
-        fillTime(article.querySelector('time'), entry.timestamp);
-        appendContent(article.querySelector('.post-body'), entry.content);
+        const description = article.querySelector('[data-post-description]');
+        const hasDescription = Boolean(entry.description?.trim());
+        description.textContent = hasDescription ? entry.description : '';
+        description.hidden = !hasDescription;
+        document.querySelector('meta[name="description"]').content = hasDescription
+            ? entry.description : preview(entry.content);
+        article.querySelector('[data-post-topic]').textContent = entry.topic.title;
+        const isProject = entry.topic.title.trim().toLowerCase() === 'project';
+        const backLabel = isProject ? 'All projects' : 'All posts';
+        const backPath = isProject ? '/projects' : '/blog';
         const back = document.querySelector('[data-article-back]');
-        back.href = isProject ? '/projects.html' : '/blog.html';
-        back.textContent = isProject ? '← All projects' : '← All posts';
-        document.querySelectorAll('.nav-link[aria-current]').forEach(link => link.removeAttribute('aria-current'));
-        document.querySelector(`.nav-link[data-page="${isProject ? 'projects' : 'blog'}"]`).setAttribute('aria-current', 'page');
+        back.href = backPath;
+        back.lastChild.textContent = ` ${backLabel}`;
+        const endLink = article.querySelector('.post-end a');
+        endLink.href = backPath;
+        endLink.textContent = `\u2190 ${backLabel}`;
+        const date = article.querySelector('[data-post-date]');
+        fillTime(date, entry.timestamp);
+        date.textContent = articleDate.format(new Date(entry.timestamp));
+        appendContent(article.querySelector('.post-body'), entry.content);
+        // Share the canonical post URL, without unrelated query parameters or fragments.
+        const postURL = new URL('/post.html', window.location.origin);
+        postURL.searchParams.set('id', String(entry.id));
+        article.querySelector('[data-post-email]').href =
+            `mailto:?subject=${encodeURIComponent(entry.title)}&body=${encodeURIComponent(postURL.href)}`;
+        const copyLink = article.querySelector('[data-copy-post-link]');
+        const feedback = article.querySelector('[data-copy-feedback]');
+        copyLink.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(postURL.href);
+                feedback.textContent = 'Link copied';
+            } catch {
+                // A selectable URL still makes sharing usable without clipboard access.
+                feedback.replaceChildren();
+                const link = document.createElement('a');
+                link.href = postURL.href;
+                link.textContent = postURL.href;
+                link.className = 'copy-fallback';
+                feedback.append('Copy this link: ', link);
+            }
+        });
         article.hidden = false;
         status.replaceChildren();
     } catch (error) {
-        title.textContent = error.status === 404 ? 'Entry not found' : 'Could not load entry';
+        document.title = error.status === 404 ? 'Post not found | jmoo.dev' : 'Could not load post | jmoo.dev';
         showMessage(status, error.status === 404
             ? 'This entry may have been removed. Browse the blog or projects for more.'
             : 'Please refresh to try again.', true);
