@@ -1,4 +1,4 @@
-# JMOO's BLOG v1.0:
+# JMBlog v0.1:
 
 This was made for my own personal use but for whatever reason you'd like to reuse the codebase, you can go right ahead.
 
