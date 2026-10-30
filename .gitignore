@@ -4,3 +4,4 @@
 /tests
 static/posts
 static/images
+*.pyc
