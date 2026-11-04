@@ -1,0 +1,26 @@
+services:
+  blog:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jmoo-blog
+    restart: unless-stopped
+
+    environment:
+      DATABASE_PATH: /app/data/blog.db
+
+    volumes:
+      - blog_data:/app/data
+      - ./posts:/app/posts:ro
+    expose:
+      - "8000"
+
+    networks:
+      - cloudflare_net
+
+volumes:
+  blog_data:
+
+networks:
+  cloudflare_net:
+    external: true

@@ -12,9 +12,8 @@ This locally hosted web application allows for a showcase of your talents, thoug
 This includes a basic full vanilla frontend and Python backend, including fully functional pages such as:
 Home, Blog, Projects, Contact
 
+I have this hosted on a Docker container, for my own reference; here are some usage examples.
 
-
-
-
-
+Creating a blog post:
+```sudo docker compose exec blog python -m public.app.main create "/app/posts/FILE_PATH" --topic ID```
 
