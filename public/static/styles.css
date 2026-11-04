@@ -79,7 +79,6 @@ button { font: inherit; }
     color: var(--text);
     font-size: 15px;
     font-weight: 600;
-    letter-spacing: 0.2em;
     white-space: nowrap;
     text-decoration: none;
 }

@@ -1,6 +1,7 @@
 ﻿import sqlite3
 from collections.abc import Iterator
 from contextlib import contextmanager
+from datetime import datetime, timezone
 
 from .config import get_settings
 from ..schemas.entry import BlogPost, Topic
@@ -137,6 +138,23 @@ def update_blog_post(
             SET topic_id = ?, title = ?, content = ?, description = ?
             WHERE id = ?
         """, (topic_id, title, content, description, blog_post_id))
+        return cursor.rowcount > 0
+
+
+def update_blog_post_timestamp(
+    topic_id: int, blog_post_id: int, timestamp: datetime
+) -> bool:
+    """Update only a matching post, storing the same UTC format as CURRENT_TIMESTAMP."""
+    if timestamp.tzinfo is None:
+        timestamp = timestamp.replace(tzinfo=timezone.utc)
+    stored_timestamp = timestamp.astimezone(timezone.utc).replace(tzinfo=None).isoformat(
+        sep=" ", timespec="seconds"
+    )
+    with transaction() as conn:
+        cursor = conn.execute(
+            "UPDATE blog_posts SET timestamp = ? WHERE topic_id = ? AND id = ?",
+            (stored_timestamp, topic_id, blog_post_id),
+        )
         return cursor.rowcount > 0
 
 

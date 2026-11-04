@@ -1,10 +1,11 @@
 import argparse
 import re
 import sqlite3
+from datetime import datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from .services import database
-
 
 def positive_id(value: str) -> int:
     try:
@@ -16,13 +17,25 @@ def positive_id(value: str) -> int:
     return identifier
 
 
+def post_timestamp(value: str) -> datetime:
+    """Parse a display date at New York midnight and convert it to UTC."""
+    message = "Timestamp must be a valid date in MM/DD/YYYY (Month/Day/Year) format."
+    if not re.fullmatch(r"[0-9]{2}/[0-9]{2}/[0-9]{4}", value):
+        raise argparse.ArgumentTypeError(message)
+    try:
+        date = datetime.strptime(value, "%m/%d/%Y")
+    except ValueError:
+        raise argparse.ArgumentTypeError(message) from None
+    return date.replace(tzinfo=ZoneInfo("America/New_York")).astimezone(timezone.utc)
+
+
 def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Manage topics and Markdown posts, or start the website with no command."
+        description="Manage topics and Markdown posts, or start the website with no args."
     )
     commands = parser.add_subparsers(dest="command")
 
-    create = commands.add_parser("create", aliases=["c"], help="Create an entry from a .md file.")
+    create = commands.add_parser("create", aliases=["c"], help="Create an entry from a .md file path.")
     create.add_argument("filepath", type=Path, help="Path to a UTF-8 Markdown file.")
     create.add_argument("--topic-id", type=positive_id, required=True,
                         help="ID of the topic this post belongs to.")
@@ -39,6 +52,13 @@ def create_parser() -> argparse.ArgumentParser:
     delete = commands.add_parser("delete", aliases=["d"], help="Delete an entry by ID.")
     delete.add_argument("blog_post_id", type=positive_id, help="ID of the post to delete.")
     delete.set_defaults(operation="delete")
+
+    timestamp = commands.add_parser("modify-timestamp", help="Change a post's timestamp.")
+    timestamp.add_argument("topic_id", type=positive_id, help="ID of the post's existing topic.")
+    timestamp.add_argument("blog_post_id", type=positive_id, help="ID of the post to update.")
+    timestamp.add_argument("timestamp", type=post_timestamp, metavar="MM/DD/YYYY",
+                           help="Valid Month/Day/Year date, using midnight in America/New_York.")
+    timestamp.set_defaults(operation="modify-timestamp")
 
     topic_create = commands.add_parser("topic-create", help="Create a topic.")
     topic_create.add_argument("title", help="A unique, nonempty topic title.")
@@ -112,6 +132,15 @@ def run_command(args: argparse.Namespace, parser: argparse.ArgumentParser) -> No
             if not database.delete_blog_post(args.blog_post_id):
                 raise ValueError(f"Post {args.blog_post_id} not found.")
             print(f"Deleted post {args.blog_post_id}.")
+        elif args.operation == "modify-timestamp":
+            if not database.update_blog_post_timestamp(
+                args.topic_id, args.blog_post_id, args.timestamp
+            ):
+                raise ValueError(f"Post {args.blog_post_id} not found in topic {args.topic_id}.")
+            print(
+                f"Updated timestamp for post {args.blog_post_id} in topic {args.topic_id} "
+                f"to {args.timestamp.isoformat()}."
+            )
         elif args.operation == "topic-create":
             topic_id = database.create_topic(args.title, args.description)
             print(f"Created topic {topic_id}: {args.title}")
